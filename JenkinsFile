@@ -16,7 +16,7 @@ node() {
               doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [],
               userRemoteConfigs: [[url: GIT_URL]]])
 
-    stage name:
+    stage name: 'Version Handling'
     writeFile([file: 'version.txt', text: "${MAJOR}.${MINOR}.${PATCH}.${env.BUILD_NUMBER}"])
 
     archive('version.txt')
