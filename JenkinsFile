@@ -10,7 +10,8 @@ node() {
 
     stage name: 'Code Checkout'
     GIT_BRANCH = 'master'
-    GIT_URL = 'git@github.com:Irdeto-Jenkins2/HelloWorld.git'
+    GIT_URL = 'https://github.com/Irdeto-Jenkins2/HelloWorld.git'
+
     checkout([$class: 'GitSCM', branches: [[name: GIT_BRANCH]],
               doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [],
               userRemoteConfigs: [[url: GIT_URL]]])
