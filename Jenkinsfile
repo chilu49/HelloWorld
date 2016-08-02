@@ -9,16 +9,18 @@ node() {
     echo 'Hello World from pipeline!'
 
     stage name: 'Code Checkout'
-    GIT_BRANCH = 'master'
-    GIT_URL = 'https://github.com/Irdeto-Jenkins2/HelloWorld.git'
+    checkout scm
 
-if(true){
-    checkout([$class: 'GitSCM', branches: [[name: GIT_BRANCH]],
-              doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'WipeWorkspace']], submoduleCfg: [],
-              userRemoteConfigs: [[url: GIT_URL]]])
-}
+    def version = null
+    if (binding.variables.get('RELEASE_TYPE') == 'release') {
+        version = "${MAJOR}.${MINOR}.${PATCH}.${env.BUILD_NUMBER}"
+    } else {
+        branch = ("branch-${env.BUILD_NUMBER}-${env.BRANCH_NAME}" =~ /\\|\/|:|"|<|>|\||\?|\*|\-/).replaceAll("_")
+        version = "0.0.0-${branch}.${env.BUILD_NUMBER}"
+    }
+
     stage name: 'Version Handling'
-    writeFile([file: 'version.txt', text: "${MAJOR}.${MINOR}.${PATCH}.${env.BUILD_NUMBER}"])
+    writeFile([file: 'version.txt', text: version])
 
     archive('version.txt')
 }
