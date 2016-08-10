@@ -8,7 +8,7 @@ Example workflow to demonstrate simple logic
 // Here is a sample stage so we can see it in our pipeline view
 stage name: 'Start Sample Stage'
 // Let's do a pipeline groovy call to print to screen (no node needed.)
-echo 'Hello World from pipeline!'
+echo 'Hello World from pipeline! Now from Merge!'
 
 // Must always start with a node to do any real/node logic.
 node() {
