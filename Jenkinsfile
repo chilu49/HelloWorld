@@ -18,8 +18,6 @@ node() {
 
     // Next area of our job is to do some logic around versioning our build.
     stage name: 'Version Handling'
-
-    // Generic logic to handle some versioning in our job.
     def version = null
     if (binding.variables.get('RELEASE_TYPE') == 'release') {
         version = "${MAJOR}.${MINOR}.${PATCH}.${env.BUILD_NUMBER}"
