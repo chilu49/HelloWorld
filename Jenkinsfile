@@ -6,6 +6,7 @@ Example workflow to demonstrate simple logic
  */
 
 // Here is a sample stage so we can see it in our pipeline view
+sleep 10
 stage name: 'Start Sample Stage'
 // Let's do a pipeline groovy call to print to screen (no node needed.)
 echo 'Hello World from pipeline!'
