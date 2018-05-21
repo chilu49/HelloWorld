@@ -1,15 +1,9 @@
 pipeline {
-    agent any
-    environment { 
-        CC = `date`
-    }
+    agent { docker { image 'maven:3.3.3' } }
     stages {
-        stage('Example') {
-            environment { 
-                DEBUG_FLAGS = '-g'
-            }
+        stage('build') {
             steps {
-                sh 'printenv'
+                sh 'mvn --version'
             }
         }
     }
