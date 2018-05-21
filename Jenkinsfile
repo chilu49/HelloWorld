@@ -20,7 +20,7 @@ node() {
     stage name: 'Version Handling'
     sh 'git log --pretty=format:"%h - %an, %ar : %s" -1 > GIT_COMMIT'
     def shortCommit = readFile('GIT_COMMIT').take(6)
-    sh 'echo ${shortCommit}'
+    sh 'echo `cat GIT_COMMIT`'
     def version = null
     if (binding.variables.get('RELEASE_TYPE') == 'release') {
         version = "${MAJOR}.${MINOR}.${PATCH}.${env.BUILD_NUMBER}"
