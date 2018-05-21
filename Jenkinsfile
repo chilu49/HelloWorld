@@ -35,4 +35,9 @@ node() {
 
     // Let's archive the version data file for later use.
     archive('version.txt')
+    post { 
+        always { 
+            echo 'I will always say Hello again!'
+        }
+    }
 }
