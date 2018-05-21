@@ -1,43 +1,18 @@
-#!groovy
-/*
-
-Example workflow to demonstrate simple logic
-
- */
-
-// Here is a sample stage so we can see it in our pipeline view
-sleep 10
-stage name: 'Start Sample Stage'
-// Let's do a pipeline groovy call to print to screen (no node needed.)
-echo 'Hello World from pipeline!'
-
-// Must always start with a node to do any real/node logic.
-node() {
-    // Checkout the code from SCM (if using the same repo as the Jenkinsfile, we can use the keyword scm)
-    stage name: 'Code Checkout'
-    checkout scm
-
-    // Next area of our job is to do some logic around versioning our build.
-    stage name: 'Version Handling'
-    sh 'git log --pretty=format:"%h - %an, %ar : %s" -1 > GIT_COMMIT'
-    def shortCommit = readFile('GIT_COMMIT').take(6)
-    sh 'echo `cat GIT_COMMIT`'
-    def version = null
-    if (binding.variables.get('RELEASE_TYPE') == 'release') {
-        version = "${MAJOR}.${MINOR}.${PATCH}.${env.BUILD_NUMBER}"
-    } else {
-        branch = ("branch-${env.BUILD_NUMBER}-${env.BRANCH_NAME}" =~ /\\|\/|:|"|<|>|\||\?|\*|\-/).replaceAll("_")
-        version = "0.0.0-${branch}.${env.BUILD_NUMBER}"
-    }
-
-    // Let's write a file to the workspace with our version information
-    writeFile([file: 'version.txt', text: version])
-
-    // Let's archive the version data file for later use.
-    archive('version.txt')
-    post { 
-        always { 
-            echo 'I will always say Hello again!'
+pipeline {
+    agent any
+    stages {
+        stage('Example') {
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                submitter "alice,bob"
+                parameters {
+                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                }
+            }
+            steps {
+                echo "Hello, ${PERSON}, nice to meet you."
+            }
         }
     }
 }
